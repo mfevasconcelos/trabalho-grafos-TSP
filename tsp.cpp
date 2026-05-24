@@ -4,6 +4,7 @@
 #include <cmath>
 #include <sstream>
 #include <climits>
+#include <algorithm>
 
 using namespace std;
 
@@ -99,6 +100,52 @@ void vizinhoMaisProximo() {
     melhor_peso += matriz_distancia[atual][melhor_rota.back()];
 }
 
+void otimizar2Opt() {
+    bool houve_melhoria = true;
+
+    while (houve_melhoria) {
+        houve_melhoria = false;
+
+        for (int i = 1; i < num_cidades - 1; i++) {
+            for (int j = i + 1; j < num_cidades; j++) {
+
+                // Identificamos as 4 cidades envolvidas na quebra
+                // Aresta 1: A -> B
+                // Aresta 2: C -> D
+                int A = melhor_rota[i - 1];
+                int B = melhor_rota[i];
+                int C = melhor_rota[j];
+
+                // O D é a próxima cidade depois do C.
+                // Se o C for a última cidade do vetor, o D volta a ser a primeira (fechando o ciclo)
+                int D = melhor_rota[(j + 1) % num_cidades];
+
+                // Distâncias antigas (que vamos quebrar)
+                int d_AB = matriz_distancia[A][B];
+                int d_CD = matriz_distancia[C][D];
+
+                // Distâncias novas (que vamos criar)
+                int d_AC = matriz_distancia[A][C];
+                int d_BD = matriz_distancia[B][D];
+
+                // Cálculo do Delta (Variação de custo)
+                int delta = (d_AC + d_BD) - (d_AB + d_CD);
+
+                // Se o Delta for negativo, significa que a nova rota é MENOR!
+                if (delta < 0) {
+                    // Inverte o pedaço da rota de B até C
+                    reverse(melhor_rota.begin() + i, melhor_rota.begin() + j + 1);
+
+                    // Atualiza o peso total da rota instantaneamente
+                    melhor_peso += delta;
+
+                    houve_melhoria = true;
+                }
+            }
+        }
+    }
+}
+
 void saida() {
     cout << "NAME: " << nome_instancia << "\n";
     cout << "COMMENT: Heuristica construtiva do vizinho mais proximo - Fernanda V, Paula Laiz, Stephany\n";
@@ -120,6 +167,7 @@ int main() {
 
     lerInstancia();
     vizinhoMaisProximo();
+    otimizar2Opt();
     saida();
 
     return 0;
