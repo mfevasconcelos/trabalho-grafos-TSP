@@ -182,8 +182,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     srand(42);
-
-    string comentario = "ILS - Fernanda V, Paula Laiz, Stephany";
+    int fator = 10;
+    string comentario = "ILS com limite de estagnacao = " + to_string(fator) + " - Fernanda V, Paula Laiz, Stephany";
 
     lerInstancia();
 
@@ -195,7 +195,7 @@ int main() {
     int peso_trabalho = melhor_peso;
 
     int iteracoes_sem_melhoria = 0;
-    int limite_estagnacao = num_cidades * 2; //ajusta
+    int limite_estagnacao = num_cidades * fator;
 
     while (iteracoes_sem_melhoria < limite_estagnacao) {
 

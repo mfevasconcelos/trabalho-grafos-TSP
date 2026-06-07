@@ -1,0 +1,16 @@
+Instruções de Compilação
+
+1. Compilação (Windows / Linux): 
+g++ tsp.cpp -o tsp -O3
+
+2. Execução Conforme Especificação:
+tsp.exe < instancia.tsp > instancia.tsp.tour
+
+3. Automação de Testes (Scripts):
+Para reproduzir nossos experimentos e medir os tempos de todas as instâncias simultaneamente, utilize os scripts fornecidos:
+
+No Windows:
+powershell -ExecutionPolicy Bypass -File rodar_experimentos.ps1 
+
+No Linux: 
+Conceda permissão de execução (chmod +x rodar_experimentos.sh) e rode ./rodar_experimentos.sh.
